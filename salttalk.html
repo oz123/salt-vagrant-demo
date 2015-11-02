@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Saltstack - Provisioning++</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+			p {
+				font-size: 36px;
+			}
+			h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; 
+				     font-size: 36px;
+			}
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      a, a > code {
+        color: rgb(249, 38, 114);
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+				color: black;
+      }
+      .remark-code, .remark-inline-code { 
+				font-family: 'Ubuntu Mono'; 
+        background: #e7e8e2;
+			
+			}
+      .remark-code-line-highlighted     { 
+				background-color: #373832; 
+        background: #e7e8e2;
+			}
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+
+      ul li { 
+			 font-size: 36px;
+			 padding: 5px 0px; }
+      
+		   .remark-code, .remark-inline-code { 
+				font-family: 'Ubuntu Mono'; 
+        background: #e7e8e2;
+			}
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+      .left-column h2:last-of-type, .left-column h3:last-child {
+         color: yellow;
+      }
+     .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+
+		 .right-column .{
+        background: #e7e8e2;
+		  }
+      .lblue {
+        background: #A9BFD4;
+      }
+			.term {
+        color: #6CF02B;
+				background: #4D4D4D;
+			}
+    </style>
+  </head>
+  <body>
+  <textarea id="source">
+
+class: center, middle, term
+
+# Saltstack - Provisioning++  
+### 3.11.2015, Oz Tiram, Python Users Munich
+
+---
+class: term
+#  What is it?
+
+<em>SaltStack software orchestrates the build and ongoing management of any modern infrastructure. </em>
+ 
+---
+class: term
+# Not only provisioning
+SaltStack does:
+
+ * Configuration Management via `states` & `pillars`
+ * Remote execution via `modules`
+ * Monitoring via `beacons`, `returners` & `reactors`
+ * Software and file server via `spm` and	Windows software repository
+ * and more ...
+
+---
+class: term
+# Why should you care?
+
+ * Infrastructure developed as code
+ * Keep your infrastructure in a git repository
+ * Simple configuration, huge amount of modules
+ * Templating via `Jinja2` or `Django` templates
+
+---
+class: term
+# Distinct features
+
+ * No SSH required
+  - Communication is ZMQ, blazingly fast
+ * Multi-Master
+ * Masterless
+ * X Platform 
+  - No more `It works, On my laptop!&trade;`
+
+---
+class: term
+.left-column[
+## Let's get started
+### - States, top.sls
+]
+
+.right-column[
+
+ * At the root of a salted cluster there is top.sls
+
+```shell
+$ cat /srv/salt/top.sls 
+base:
+  '*':
+    - common
+```
+ * apply the state `common` to all hosts
+
+```shell
+$ sudo salt '*' state.sls common
+```
+ * apply a single id from `common` to all hosts
+
+```shell
+$ sudo salt '*' state.sls_id common_packages common
+```
+]
+
+---
+class: term
+.left-column[
+
+## States
+## - groups
+]
+
+.right-column[
+
+ * The `top.sls` can have a detailed hierarchy
+
+```shell
+$ cat /srv/salt/top.sls 
+base:
+ '*':
+  - common
+ 'data*':
+ - mysql
+ - monit
+```
+]
+---
+class: term
+.left-column[
+
+## States
+## - groups
+## - includes
+]
+
+.right-column[
+
+ * The `top.sls` can have a detailed hierarchy
+
+```shell
+$ cat /srv/salt/top.sls 
+base:
+ '*':
+  - common
+ 'data*':
+ - mysql
+ - monit
+```
+* states can have includes
+
+```shell
+$ tree /srv/salt/common/
+/srv/salt/common/
+├── init.sls
+├── packages.sls
+└── py_packages.sls
+
+$ cat /srv/salt/common/init.sls 
+include:
+  - common.packages
+  - common.py_packages
+```
+]
+---
+class: term
+.left-column[
+
+## States
+## - groups
+## - includes
+## - YAML + Jinja2
+### you can call salt moduls too
+]
+
+.right-column[
+```jinja2
+$ cat /srv/salt/common/py_packages.sls 
+{% if not salt['file.file_exists']('/usr/local/bin/pip') %}
+
+get_pip:
+ file.managed:
+  - name: /tmp/get-pip.py
+  - source: salt://common/get-pip.py
+  - mode: 755
+
+ cmd.run:
+  - name: /tmp/get-pip.py
+
+clean_up:
+ cmd.run:
+  - name: rm /tmp/get-pip.py 
+
+{% endif %}
+
+{% for pkgname in ['django == 1.8.0', 'colorama', 'flask']%}
+install_{{ pkgname }}:
+ pip.installed:
+  - name: {{ pkgname }}
+{% endfor %}
+```
+]
+---
+class: term
+.left-column[
+
+## States
+## - groups
+## - includes
+## - YAML + Jinja2
+## - Targeting
+]
+
+.right-column[
+```jinja2
+$ cat common/packages.sls 
+common_packages:
+  pkg.installed:
+    - pkgs:
+      - htop
+      - strace
+      {% if grains['os'] == 'CentOS' %}
+      - vim-enhanced
+      {% elif grains['os'] == 'Ubuntu' %}
+      - vim
+      {% endif %}
+```
+
+* Run on all hosts 
+```shell
+$ sudo salt '*' state.highstate
+```
+]
+
+---
+class: term
+# Remote execution briefly
+## Uses the same targeting system
+ 
+ * Unix commands
+```shell
+$ salt 'minion1' cmd.run 'uptime'
+minion1:
+     13:31:50 up  3:35,  0 users,  load average: 0.05, 0.03, 0.05
+```
+ * Salt modules
+```shell
+$ salt 'minion1' pip.install 'pwman3'
+```
+
+---
+class: term
+# Live demo
+
+Get the Vagrant + Salt states:
+```shell
+ $ git clone https://github.com/oz123/salt-vagrant-demo.git
+```
+---
+class: term
+## Topics not covered due lack of time
+ 
+ * Pillars
+ * Returners, beacons Reactors
+ * Software repositories for Windows and other OSs.
+
+---
+class: term
+# Salt's Disatvantages
+ * Highly Complex
+  - is it worth it for less than 20 Servers?
+ * Jinja2 trickiness and other quirks  
+ * Rapid development cycles 
+  - No LTS versions
+
+---
+class: center, middle, term
+# Questions?
+
+---
+class: class: center, middle, term
+# Thank you for listening
+</textarea>
+    <!--script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"-->
+    <script src="./static/remark-latest.js" >
+    </script>
+    <script>
+	var slideshow = remark.create(
+{
+  // Set the slideshow display ratio
+  // Default: '4:3'
+  // Alternatives: '16:9', ...
+  ratio: '4:3',
+
+  // Navigation options
+  navigation: {
+    // Enable or disable navigating using scroll
+    // Default: true
+    // Alternatives: false
+    scroll: true,
+
+    // Enable or disable navigation using touch
+    // Default: true
+    // Alternatives: false
+    touch: true,
+
+    // Enable or disable navigation using click
+    // Default: false
+    // Alternatives: true
+    click: true
+  },
+
+   //slideNumberFormat: function (current, total) {
+   //return '';
+   //},
+
+  // Enable or disable counting of incremental slides in the slide counting
+  countIncrementalSlides: true
+});
+    </script>
+  </body>
+</html>
