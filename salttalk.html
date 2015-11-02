@@ -26,8 +26,8 @@
         position: absolute;
         bottom: 3em;
       }
-      li p { line-height: 1.25em; 
-				     font-size: 36px;
+      li p { line-height: 1.25em;
+             font-size: 36px;
 			}
       .red { color: #fa0000; }
       .large { font-size: 2em; }
@@ -40,13 +40,13 @@
         border-radius: 5px;
 				color: black;
       }
-      .remark-code, .remark-inline-code { 
-				font-family: 'Ubuntu Mono'; 
+      .remark-code, .remark-inline-code {
+				font-family: 'Ubuntu Mono';
         background: #e7e8e2;
-			
+
 			}
-      .remark-code-line-highlighted     { 
-				background-color: #373832; 
+      .remark-code-line-highlighted {
+				background-color: #373832;
         background: #e7e8e2;
 			}
       .pull-left {
@@ -68,12 +68,12 @@
         padding: 15px;
       }
 
-      ul li { 
-			 font-size: 36px;
-			 padding: 5px 0px; }
-      
-		   .remark-code, .remark-inline-code { 
-				font-family: 'Ubuntu Mono'; 
+      ul li {
+       font-size: 36px;
+       padding: 5px 0px; }
+
+     .remark-code, .remark-inline-code {
+				font-family: 'Ubuntu Mono';
         background: #e7e8e2;
 			}
 
@@ -93,9 +93,9 @@
         padding-top: 1em;
       }
 
-		 .right-column .{
-        background: #e7e8e2;
-		  }
+     .right-column .{
+       background: #e7e8e2;
+     }
       .lblue {
         background: #A9BFD4;
       }
@@ -110,7 +110,7 @@
 
 class: center, middle, term
 
-# Saltstack - Provisioning++  
+# Saltstack - Provisioning++
 ### 3.11.2015, Oz Tiram, Python Users Munich
 
 ---
@@ -118,7 +118,7 @@ class: term
 #  What is it?
 
 <em>SaltStack software orchestrates the build and ongoing management of any modern infrastructure. </em>
- 
+
 ---
 class: term
 # Not only provisioning
@@ -130,6 +130,10 @@ SaltStack does:
  * Software and file server via `spm` and	Windows software repository
  * and more ...
 
+???
+
+SaltStack as the name says is not only a provisioning and configuration
+management.
 ---
 class: term
 # Why should you care?
@@ -147,7 +151,7 @@ class: term
   - Communication is ZMQ, blazingly fast
  * Multi-Master
  * Masterless
- * X Platform 
+ * X Platform
   - No more `It works, On my laptop!&trade;`
 
 ---
@@ -162,7 +166,7 @@ class: term
  * At the root of a salted cluster there is top.sls
 
 ```shell
-$ cat /srv/salt/top.sls 
+$ cat /srv/salt/top.sls
 base:
   '*':
     - common
@@ -192,7 +196,7 @@ class: term
  * The `top.sls` can have a detailed hierarchy
 
 ```shell
-$ cat /srv/salt/top.sls 
+$ cat /srv/salt/top.sls
 base:
  '*':
   - common
@@ -215,7 +219,7 @@ class: term
  * The `top.sls` can have a detailed hierarchy
 
 ```shell
-$ cat /srv/salt/top.sls 
+$ cat /srv/salt/top.sls
 base:
  '*':
   - common
@@ -232,7 +236,7 @@ $ tree /srv/salt/common/
 ├── packages.sls
 └── py_packages.sls
 
-$ cat /srv/salt/common/init.sls 
+$ cat /srv/salt/common/init.sls
 include:
   - common.packages
   - common.py_packages
@@ -251,7 +255,7 @@ class: term
 
 .right-column[
 ```jinja2
-$ cat /srv/salt/common/py_packages.sls 
+$ cat /srv/salt/common/py_packages.sls
 {% if not salt['file.file_exists']('/usr/local/bin/pip') %}
 
 get_pip:
@@ -265,7 +269,7 @@ get_pip:
 
 clean_up:
  cmd.run:
-  - name: rm /tmp/get-pip.py 
+  - name: rm /tmp/get-pip.py
 
 {% endif %}
 
@@ -289,7 +293,7 @@ class: term
 
 .right-column[
 ```jinja2
-$ cat common/packages.sls 
+$ cat common/packages.sls
 common_packages:
   pkg.installed:
     - pkgs:
@@ -302,7 +306,7 @@ common_packages:
       {% endif %}
 ```
 
-* Run on all hosts 
+* Run on all hosts
 ```shell
 $ sudo salt '*' state.highstate
 ```
@@ -312,7 +316,7 @@ $ sudo salt '*' state.highstate
 class: term
 # Remote execution briefly
 ## Uses the same targeting system
- 
+
  * Unix commands
 ```shell
 $ salt 'minion1' cmd.run 'uptime'
@@ -335,7 +339,7 @@ Get the Vagrant + Salt states:
 ---
 class: term
 ## Topics not covered due lack of time
- 
+
  * Pillars
  * Returners, beacons Reactors
  * Software repositories for Windows and other OSs.
@@ -345,8 +349,8 @@ class: term
 # Salt's Disatvantages
  * Highly Complex
   - is it worth it for less than 20 Servers?
- * Jinja2 trickiness and other quirks  
- * Rapid development cycles 
+ * Jinja2 trickiness and other quirks
+ * Rapid development cycles
   - No LTS versions
 
 ---
