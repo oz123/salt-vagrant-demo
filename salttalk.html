@@ -113,11 +113,20 @@ class: center, middle, term
 # Saltstack - Provisioning++
 ### 3.11.2015, Oz Tiram, Python Users Munich
 
+
+???
+
+Say a few words about me
+
 ---
 class: term
 #  What is it?
 
 <em>SaltStack software orchestrates the build and ongoing management of any modern infrastructure. </em>
+
+???
+This is how salt stack creators describe salt.
+And indeed, saltstack is not only a provisioning or remote execution tool
 
 ---
 class: term
@@ -134,6 +143,16 @@ SaltStack does:
 
 SaltStack as the name says is not only a provisioning and configuration
 management.
+It's a stack of utilities common for managing a cluster of servers or multiple
+machines.
+Instead of building your own stack of Monitoring\Configuration Management\
+Fileserver you get a `Cluster Management Distribution` with all tools
+grown in the same place. This has the advatage of coupling and similar syntax
+all over the place.
+As you can see salt is capable of many things.
+However, due to our time limits, this talk will mostly
+concentrate on configuration management and remote execution.
+
 ---
 class: term
 # Why should you care?
@@ -142,6 +161,13 @@ class: term
  * Keep your infrastructure in a git repository
  * Simple configuration, huge amount of modules
  * Templating via `Jinja2` or `Django` templates
+
+???
+ - Keeping a record - understading why things were done in a certain way
+ - In case of ... no one wants to think about it ...
+ - Quickly add more machines, automate boring stuff,
+   re-use written states and modules == save time!
+ - Use a familiar syntax - Bring Ops closer to Devs
 
 ---
 class: term
@@ -153,6 +179,21 @@ class: term
  * Masterless
  * X Platform
   - No more `It works, On my laptop!&trade;`
+
+???
+
+ * No SSH, means no one does things MANUALLY
+  - Safety + Securtiy
+ * 0MQ Parallel execution is order of magnitudes
+   faster for large number of machines
+	- Admittingly, this does not matter if you only
+    maintain 12 machines
+ * Masterless, means you can configure Development
+   boxes on Developers laptops, or even configure
+   machines at first boot time, before they even
+   know of the master
+ * Good support for Windows\Mac if you don't want
+   to go the VirtualBox\Docker path
 
 ---
 class: term
@@ -307,8 +348,15 @@ common_packages:
 ```
 
 * Run on all hosts
+
 ```shell
 $ sudo salt '*' state.highstate
+
+```
+* Only on Ubuntu
+
+```shell
+$ sudo salt -G 'os:Ubuntu' state.highstate
 ```
 ]
 
@@ -332,10 +380,14 @@ $ salt 'minion1' pip.install 'pwman3'
 class: term
 # Live demo
 
-Get the Vagrant + Salt states:
+Get up and running with Vagrant + Salt states:
 ```shell
  $ git clone https://github.com/oz123/salt-vagrant-demo.git
 ```
+
+Running `vagrant up` will create 2 Ubuntu machines and one 
+CentOS machine. One Ubuntu machine serves as the salt master.
+
 ---
 class: term
 ## Topics not covered due lack of time
@@ -352,7 +404,7 @@ class: term
  * Jinja2 trickiness and other quirks
  * Rapid development cycles
   - No LTS versions
-
+ * Command line only
 ---
 class: center, middle, term
 # Questions?
