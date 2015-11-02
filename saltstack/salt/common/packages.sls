@@ -3,4 +3,9 @@ common_packages:
     - pkgs:
       - htop
       - strace
+      {% if grains['os'] == 'CentOS' %}
+      - vim-enhanced
+      {% elif grains['os'] == 'Ubuntu' %}
       - vim
+      {% endif %}
+  
