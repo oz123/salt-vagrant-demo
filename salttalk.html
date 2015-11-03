@@ -208,10 +208,29 @@ class: term
 
 ```shell
 $ cat /srv/salt/top.sls
+# base the environment name, by default
+# it is located in /srv/salt
+# you can have many environments, and you
+# are not forced to have a certain directory hierarchy
 base:
-  '*':
+  '*':  # this applies to all hosts
     - common
+	'worker*': # only those mathching this pattern
+    - some_other_state
 ```
+
+ * The `top.sls` can have a complex hierarchy
+]
+
+---
+class: term
+.left-column[
+## Let's get started
+### - States, top.sls
+]
+
+.right-column[
+
  * apply the state `common` to all hosts
 
 ```shell
@@ -222,28 +241,10 @@ $ sudo salt '*' state.sls common
 ```shell
 $ sudo salt '*' state.sls_id common_packages common
 ```
-]
-
----
-class: term
-.left-column[
-
-## States
-## - groups
-]
-
-.right-column[
-
- * The `top.sls` can have a detailed hierarchy
+ * apply all states to all hosts
 
 ```shell
-$ cat /srv/salt/top.sls
-base:
- '*':
-  - common
- 'data*':
- - mysql
- - monit
+$ sudo salt '*' state.highstate
 ```
 ]
 ---
@@ -251,23 +252,11 @@ class: term
 .left-column[
 
 ## States
-## - groups
 ## - includes
 ]
 
 .right-column[
 
- * The `top.sls` can have a detailed hierarchy
-
-```shell
-$ cat /srv/salt/top.sls
-base:
- '*':
-  - common
- 'data*':
- - mysql
- - monit
-```
 * states can have includes
 
 ```shell
