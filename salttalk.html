@@ -87,6 +87,9 @@ body {
 		.left-column h2:last-of-type, .left-column h3:last-child {
 			color: yellow;
 		}
+		.yellow{
+			color: yellow;
+		}
 		.right-column {
 			width: 75%;
 			float: right;
@@ -102,6 +105,10 @@ body {
 		.term {
 			color: #6CF02B;
 			background: #4D4D4D;
+		}
+		
+		.actions li {
+			font-size: 32px;
 		}
 		</style>
 	</head>
@@ -250,9 +257,8 @@ dev:
 ```
 ]
 
-
 ---
-class: term
+class: term, actions
 .left-column[
 ## Let's get started
 ### - Applying states
@@ -267,7 +273,7 @@ $ sudo salt '*' state.highstate
 ```
 ]
 ---
-class: term
+class: term, actions
 .left-column[
 ## Let's get started
 ### - Applying states
@@ -281,14 +287,13 @@ class: term
 ```shell
 $ sudo salt '*' state.highstate
 ```
-* apply the state `common` to all hosts
-
+* apply the state `common` to all hosts, matching
 ```shell
-$ sudo salt '*' state.sls common
+$ sudo salt 'minion*' state.sls common
 ```
 ]
 ---
-class: term
+class: term, actions
 .left-column[
 ## Let's get started
 ### - Applying states
@@ -303,19 +308,20 @@ class: term
 ```shell
 $ sudo salt '*' state.highstate
 ```
-* apply the state `common` to all hosts
+* apply the state `common` to all hosts, matching
 
 ```shell
-$ sudo salt '*' state.sls common
+$ sudo salt 'minion*' state.sls common
 ```
-* apply a single action from `common` to all hosts
+* apply a single action from `common` to all hosts matching
 
 ```shell
-$ sudo salt '*' state.sls_id common_packages common
+$ sudo salt 'minion[1-10]' state.sls_id \
+       common_packages common
 ```
 ]
 ---
-class: term
+class: term, actions
 .left-column[
 ## Let's get started
 ### - Applying states
@@ -332,15 +338,16 @@ class: term
 ```shell
 $ sudo salt '*' state.highstate
 ```
-* apply the state `common` to all hosts
+* apply the state `common` to all hosts, matching
 
 ```shell
-$ sudo salt '*' state.sls common
+$ sudo salt 'minion*' state.sls common
 ```
-* apply a single action from `common` to all hosts
+* apply a single action from `common` to all hosts matching
 
 ```shell
-$ sudo salt '*' state.sls_id common_packages common
+$ sudo salt 'minion[1-10]' state.sls_id \
+       common_packages common
 ```
 * Only on Ubuntu
 
@@ -351,8 +358,92 @@ $ sudo salt -G 'os:Ubuntu' state.highstate
 ---
 class: term
 .left-column[
+## .yellow[Inside states]
+## - YAML
+]
+.right-column[
+```jinja2
+get_pip:
+ file.managed:
+  - name: /tmp/get-pip.py
+  - source: salt://common/get-pip.py
+  - mode: 755
 
-## States
+cmd.run:
+ - name: /tmp/get-pip.py
+
+clean_up:
+ cmd.run:
+  - name: rm /tmp/get-pip.py
+```
+]
+---
+class: term
+.left-column[
+## .yellow[Inside states]
+## - YAML
+## - Jinja2
+]
+.right-column[
+```jinja2
+get_pip:
+ file.managed:
+  - name: /tmp/get-pip.py
+  - source: salt://common/get-pip.py
+  - mode: 755
+
+cmd.run:
+ - name: /tmp/get-pip.py
+
+clean_up:
+ cmd.run:
+  - name: rm /tmp/get-pip.py
+
+{% for pkgname in ['django == 1.8.0', 
+                   'colorama', 'flask']%}
+install_{{ pkgname }}:
+ pip.installed:
+  - name: {{ pkgname }}
+{% endfor %}
+```
+]
+---
+class: term
+.left-column[
+## .yellow[Inside states]
+## - YAML
+## - Jinja2
+## - Built-In modules
+]
+.right-column[
+```jinja2
+{% set pip = /usr/local/bin/pip %}
+{% if not salt['file.file_exists'](pip) %}
+get_pip:
+ file.managed:
+  - name: /tmp/get-pip.py
+  - source: salt://common/get-pip.py
+  - mode: 755
+
+cmd.run:
+ - name: /tmp/get-pip.py
+
+clean_up:
+ cmd.run:
+  - name: rm /tmp/get-pip.py
+{% endif %}
+{% for pkgname in ['django == 1.8.0', 
+                   'colorama', 'flask']%}
+install_{{ pkgname }}:
+ pip.installed:
+  - name: {{ pkgname }}
+{% endfor %}
+```
+]
+---
+class: term
+.left-column[
+## .yellow[Inside states]
 ## - includes
 ]
 
@@ -376,53 +467,28 @@ include:
 ---
 class: term
 .left-column[
-
-## States
-## - groups
+## .yellow[Inside states]
 ## - includes
-## - YAML + Jinja2
-### you can call salt moduls too
+## - grains
 ]
 
 .right-column[
-```jinja2
-$ cat /srv/salt/common/py_packages.sls
-{% if not salt['file.file_exists']('/usr/local/bin/pip') %}
+* states can have includes
 
-get_pip:
-file.managed:
-- name: /tmp/get-pip.py
-- source: salt://common/get-pip.py
-- mode: 755
-
-cmd.run:
-- name: /tmp/get-pip.py
-
-clean_up:
-cmd.run:
-- name: rm /tmp/get-pip.py
-
-{% endif %}
-
-{% for pkgname in ['django == 1.8.0', 'colorama', 'flask']%}
-install_{{ pkgname }}:
-pip.installed:
-- name: {{ pkgname }}
-{% endfor %}
+```shell
+$ tree /srv/salt/common/
+/srv/salt/common/
+├── init.sls
+├── packages.sls
+└── py_packages.sls
 ```
-]
----
-class: term
-.left-column[
+```yaml
+$ cat /srv/salt/common/init.sls
+include:
+- common.packages
+- common.py_packages
+```
 
-## States
-## - groups
-## - includes
-## - YAML + Jinja2
-## - Targeting
-]
-
-.right-column[
 ```jinja2
 $ cat common/packages.sls
 common_packages:
@@ -517,7 +583,7 @@ class: class: center, middle, term
 			// Enable or disable navigation using click
 			// Default: false
 			// Alternatives: true
-			click: true
+			// click: true
 		},
 
 			//slideNumberFormat: function (current, total) {
