@@ -222,7 +222,7 @@ class: term
 
 .right-column[
 
- * At the root of a salted cluster there is top.sls
+ * At the root of a salted cluster there is `top.sls`
 
 ```shell
 $ cat /srv/salt/top.sls
@@ -252,7 +252,7 @@ class: term
 production:
  '*':
    - firewallz
-   - dailyback
+   - dailybackup
    - setry
  '*db':
    - mysql # this state will configure hardend mysql
