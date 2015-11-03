@@ -1,113 +1,112 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Saltstack - Provisioning++</title>
-    <meta charset="utf-8">
-    <style>
-      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+	<head>
+		<title>Saltstack - Provisioning++</title>
+		<meta charset="utf-8">
+		<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-      body {
-        font-family: 'Droid Serif';
-      }
+body {
+	font-family: 'Droid Serif';
+}
 			p {
 				font-size: 36px;
 			}
 			h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: 400;
-        margin-bottom: 0;
-      }
-      .remark-slide-content h1 { font-size: 3em; }
-      .remark-slide-content h2 { font-size: 2em; }
-      .remark-slide-content h3 { font-size: 1.6em; }
-      .footnote {
-        position: absolute;
-        bottom: 3em;
-      }
-      li p { line-height: 1.25em;
-             font-size: 36px;
+				font-family: 'Yanone Kaffeesatz';
+				font-weight: 400;
+				margin-bottom: 0;
 			}
-      .red { color: #fa0000; }
-      .large { font-size: 2em; }
-      a, a > code {
-        color: rgb(249, 38, 114);
-        text-decoration: none;
-      }
-      code {
-        background: #e7e8e2;
-        border-radius: 5px;
+			.remark-slide-content h1 { font-size: 3em; }
+			.remark-slide-content h2 { font-size: 2em; }
+			.remark-slide-content h3 { font-size: 1.6em; }
+			.footnote {
+				position: absolute;
+				bottom: 3em;
+			}
+			li p { line-height: 1.25em;
+				font-size: 36px;
+			}
+			.red { color: #fa0000; }
+			.large { font-size: 2em; }
+			a, a > code {
+				color: rgb(249, 38, 114);
+				text-decoration: none;
+			}
+			code {
+				background: #e7e8e2;
+				border-radius: 5px;
 				color: black;
-      }
-      .remark-code, .remark-inline-code {
+			}
+			.remark-code, .remark-inline-code {
 				font-family: 'Ubuntu Mono';
-        background: #e7e8e2;
+				background: #e7e8e2;
 
 			}
-      .remark-code-line-highlighted {
+			.remark-code-line-highlighted {
 				background-color: #373832;
-        background: #e7e8e2;
+				background: #e7e8e2;
 			}
-      .pull-left {
-        float: left;
-        width: 47%;
-      }
-      .pull-right {
-        float: right;
-        width: 47%;
-      }
-      .pull-right ~ p {
-        clear: both;
-      }
-      #slideshow .slide .content code {
-        font-size: 0.8em;
-      }
-      #slideshow .slide .content pre code {
-        font-size: 0.9em;
-        padding: 15px;
-      }
-
-      ul li {
-       font-size: 36px;
-       padding: 5px 0px; }
-
-     .remark-code, .remark-inline-code {
-				font-family: 'Ubuntu Mono';
-        background: #e7e8e2;
+			.pull-left {
+				float: left;
+				width: 47%;
+			}
+			.pull-right {
+				float: right;
+				width: 47%;
+			}
+			.pull-right ~ p {
+				clear: both;
+			}
+			#slideshow .slide .content code {
+				font-size: 0.8em;
+			}
+			#slideshow .slide .content pre code {
+				font-size: 0.9em;
+				padding: 15px;
 			}
 
-      /* Two-column layout */
-      .left-column {
-        color: #777;
-        width: 20%;
-        height: 92%;
-        float: left;
-      }
-      .left-column h2:last-of-type, .left-column h3:last-child {
-         color: yellow;
-      }
-     .right-column {
-        width: 75%;
-        float: right;
-        padding-top: 1em;
-      }
+			ul li {
+				font-size: 36px;
+				padding: 5px 0px; }
 
-     .right-column .{
-       background: #e7e8e2;
-     }
-      .lblue {
-        background: #A9BFD4;
-      }
-			.term {
-        color: #6CF02B;
-				background: #4D4D4D;
-			}
-    </style>
-  </head>
-  <body>
-  <textarea id="source">
+		.remark-code, .remark-inline-code {
+			font-family: 'Ubuntu Mono';
+			background: #e7e8e2;
+		}
 
+		/* Two-column layout */
+		.left-column {
+			color: #777;
+			width: 20%;
+			height: 92%;
+			float: left;
+		}
+		.left-column h2:last-of-type, .left-column h3:last-child {
+			color: yellow;
+		}
+		.right-column {
+			width: 75%;
+			float: right;
+			padding-top: 1em;
+		}
+
+		.right-column .{
+			background: #e7e8e2;
+		}
+		.lblue {
+			background: #A9BFD4;
+		}
+		.term {
+			color: #6CF02B;
+			background: #4D4D4D;
+		}
+		</style>
+	</head>
+	<body>
+		<textarea id="source">
 class: center, middle, term
 
 # Saltstack - Provisioning++
@@ -141,9 +140,7 @@ SaltStack does:
 
 ???
 
-SaltStack as the name says is not only a provisioning and configuration
-management.
-It's a stack of utilities common for managing a cluster of servers or multiple
+Saltstack is actually a stack of utilities common for managing a cluster of servers or multiple
 machines.
 Instead of building your own stack of Monitoring\Configuration Management\
 Fileserver you get a `Cluster Management Distribution` with all tools
@@ -186,14 +183,23 @@ class: term
   - Safety + Securtiy
  * 0MQ Parallel execution is order of magnitudes
    faster for large number of machines
-	- Admittingly, this does not matter if you only
-    maintain 12 machines
+   - Admittingly, this does not matter if you only
+     maintain 12 machines
  * Masterless, means you can configure Development
    boxes on Developers laptops, or even configure
    machines at first boot time, before they even
    know of the master
  * Good support for Windows\Mac if you don't want
    to go the VirtualBox\Docker path
+---
+class: center, middle, term
+
+# Let's see how salt works
+
+???
+
+We are now going to see some basic principles
+of salt, and there will be a live demo following
 
 ---
 class: term
@@ -213,15 +219,12 @@ $ cat /srv/salt/top.sls
 # you can have many environments, and you
 # are not forced to have a certain directory hierarchy
 base:
-  '*':  # this applies to all hosts
-    - common
-	'worker*': # only those mathching this pattern
-    - some_other_state
+ '*':  # this applies to all hosts
+  - common
+ 'worker*': # only those mathching this pattern
+  - some_other_state
 ```
-
- * The `top.sls` can have a complex hierarchy
 ]
-
 ---
 class: term
 .left-column[
@@ -231,20 +234,118 @@ class: term
 
 .right-column[
 
- * apply the state `common` to all hosts
+* The `top.sls` can have multiple environments
+
+```yaml
+production:
+ '*':
+   - firewallz
+   - dailyback
+   - setry
+ '*db':
+   - mysql # this state will configure hardend mysql
+dev:
+ 'dev*':
+  - mysql  # this is another state, despite the name
+```
+]
+
+
+---
+class: term
+.left-column[
+## Let's get started
+### - Applying states
+]
+
+.right-column[
+
+* apply all states to all hosts
+
+```shell
+$ sudo salt '*' state.highstate
+```
+]
+---
+class: term
+.left-column[
+## Let's get started
+### - Applying states
+### - Be specific
+]
+
+.right-column[
+
+* apply all states to all hosts
+
+```shell
+$ sudo salt '*' state.highstate
+```
+* apply the state `common` to all hosts
 
 ```shell
 $ sudo salt '*' state.sls common
 ```
- * apply a single id from `common` to all hosts
+]
+---
+class: term
+.left-column[
+## Let's get started
+### - Applying states
+### - Be specific
+### - Even more specific
+]
+
+.right-column[
+
+* apply all states to all hosts
+
+```shell
+$ sudo salt '*' state.highstate
+```
+* apply the state `common` to all hosts
+
+```shell
+$ sudo salt '*' state.sls common
+```
+* apply a single action from `common` to all hosts
 
 ```shell
 $ sudo salt '*' state.sls_id common_packages common
 ```
- * apply all states to all hosts
+]
+---
+class: term
+.left-column[
+## Let's get started
+### - Applying states
+### - Be specific
+### - Even more specific
+### - Fine grain control
+]
+
+
+.right-column[
+
+* apply all states to all hosts
 
 ```shell
 $ sudo salt '*' state.highstate
+```
+* apply the state `common` to all hosts
+
+```shell
+$ sudo salt '*' state.sls common
+```
+* apply a single action from `common` to all hosts
+
+```shell
+$ sudo salt '*' state.sls_id common_packages common
+```
+* Only on Ubuntu
+
+```shell
+$ sudo salt -G 'os:Ubuntu' state.highstate
 ```
 ]
 ---
@@ -268,8 +369,8 @@ $ tree /srv/salt/common/
 
 $ cat /srv/salt/common/init.sls
 include:
-  - common.packages
-  - common.py_packages
+- common.packages
+- common.py_packages
 ```
 ]
 ---
@@ -289,24 +390,24 @@ $ cat /srv/salt/common/py_packages.sls
 {% if not salt['file.file_exists']('/usr/local/bin/pip') %}
 
 get_pip:
- file.managed:
-  - name: /tmp/get-pip.py
-  - source: salt://common/get-pip.py
-  - mode: 755
+file.managed:
+- name: /tmp/get-pip.py
+- source: salt://common/get-pip.py
+- mode: 755
 
- cmd.run:
-  - name: /tmp/get-pip.py
+cmd.run:
+- name: /tmp/get-pip.py
 
 clean_up:
- cmd.run:
-  - name: rm /tmp/get-pip.py
+cmd.run:
+- name: rm /tmp/get-pip.py
 
 {% endif %}
 
 {% for pkgname in ['django == 1.8.0', 'colorama', 'flask']%}
 install_{{ pkgname }}:
- pip.installed:
-  - name: {{ pkgname }}
+pip.installed:
+- name: {{ pkgname }}
 {% endfor %}
 ```
 ]
@@ -325,27 +426,15 @@ class: term
 ```jinja2
 $ cat common/packages.sls
 common_packages:
-  pkg.installed:
-    - pkgs:
-      - htop
-      - strace
-      {% if grains['os'] == 'CentOS' %}
-      - vim-enhanced
-      {% elif grains['os'] == 'Ubuntu' %}
-      - vim
-      {% endif %}
-```
-
-* Run on all hosts
-
-```shell
-$ sudo salt '*' state.highstate
-
-```
-* Only on Ubuntu
-
-```shell
-$ sudo salt -G 'os:Ubuntu' state.highstate
+pkg.installed:
+- pkgs:
+- htop
+- strace
+{% if grains['os'] == 'CentOS' %}
+- vim-enhanced
+{% elif grains['os'] == 'Ubuntu' %}
+- vim
+{% endif %}
 ```
 ]
 
@@ -356,13 +445,13 @@ class: term
 
  * Unix commands
 ```shell
-$ salt 'minion1' cmd.run 'uptime'
+ $ salt 'minion1' cmd.run 'uptime'
 minion1:
-     13:31:50 up  3:35,  0 users,  load average: 0.05, 0.03, 0.05
+13:31:50 up  3:35,  0 users,  load average: 0.05, 0.03, 0.05
 ```
  * Salt modules
 ```shell
-$ salt 'minion1' pip.install 'pwman3'
+ $ salt 'minion1' pip.install 'pwman3'
 ```
 
 ---
@@ -371,7 +460,7 @@ class: term
 
 Get up and running with Vagrant + Salt states:
 ```shell
- $ git clone https://github.com/oz123/salt-vagrant-demo.git
+$ git clone https://github.com/oz123/salt-vagrant-demo.git
 ```
 
 Running `vagrant up` will create 2 Ubuntu machines and one
@@ -403,42 +492,41 @@ class: center, middle, term
 class: class: center, middle, term
 # Thank you for listening
 </textarea>
-    <!--script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"-->
-    <script src="./static/remark-latest.js" >
-    </script>
-    <script>
+<!--script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"-->
+<script src="./static/remark-latest.js" ></script>
+<script>
 	var slideshow = remark.create(
-{
-  // Set the slideshow display ratio
-  // Default: '4:3'
-  // Alternatives: '16:9', ...
-  ratio: '4:3',
+	{
+		// Set the slideshow display ratio
+		// Default: '4:3'
+		// Alternatives: '16:9', ...
+		ratio: '4:3',
 
-  // Navigation options
-  navigation: {
-    // Enable or disable navigating using scroll
-    // Default: true
-    // Alternatives: false
-    scroll: true,
+		// Navigation options
+		navigation: {
+			// Enable or disable navigating using scroll
+			// Default: true
+			// Alternatives: false
+			scroll: true,
 
-    // Enable or disable navigation using touch
-    // Default: true
-    // Alternatives: false
-    touch: true,
+			// Enable or disable navigation using touch
+			// Default: true
+			// Alternatives: false
+			touch: true,
 
-    // Enable or disable navigation using click
-    // Default: false
-    // Alternatives: true
-    click: true
-  },
+			// Enable or disable navigation using click
+			// Default: false
+			// Alternatives: true
+			click: true
+		},
 
-   //slideNumberFormat: function (current, total) {
-   //return '';
-   //},
+			//slideNumberFormat: function (current, total) {
+			//return '';
+			//},
 
-  // Enable or disable counting of incremental slides in the slide counting
-  countIncrementalSlides: true
-});
-    </script>
-  </body>
+			// Enable or disable counting of incremental slides in the slide counting
+			countIncrementalSlides: true
+		});
+</script>
+</body>
 </html>
