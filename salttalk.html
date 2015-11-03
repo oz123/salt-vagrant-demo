@@ -106,7 +106,7 @@ body {
 			color: #6CF02B;
 			background: #4D4D4D;
 		}
-		
+
 		.actions li {
 			font-size: 32px;
 		}
@@ -122,8 +122,9 @@ class: center, middle, term
 
 ???
 
-Say a few words about me
-
+Oz Tiram, currently working as DevOps and Data Engineer.
+Extensive experience with Python and Linux, especially in the
+field of High Perfomance Computing.
 ---
 class: term
 #  What is it?
@@ -162,16 +163,19 @@ class: term
 # Why should you care?
 
  * Infrastructure developed as code
- * Keep your infrastructure in a git repository
- * Simple configuration, huge amount of modules
+  - Keep your infrastructure in a git repository
+ * Simple configuration, re-use huge amount of modules
  * Templating via `Jinja2` or `Django` templates
 
 ???
- - Keeping a record - understading why things were done in a certain way
- - In case of ... no one wants to think about it ...
- - Quickly add more machines, automate boring stuff,
-   re-use written states and modules == save time!
- - Use a familiar syntax - Bring Ops closer to Devs
+
+ *  Infrastructure developed as code
+   helps you understading why things were done in a certain way,
+   in case you need to recover from disaster or transfer knowledge to
+   peers.
+ - It helps Quickly add more machines, automating boring stuff,
+   saving time and preventing human errors.
+ - The use of a familiar templating language bring Ops closer to Developers
 
 ---
 class: term
@@ -188,8 +192,9 @@ class: term
 
  * No SSH, means no one does things MANUALLY
   - Safety + Securtiy
- * 0MQ Parallel execution is order of magnitudes
-   faster for large number of machines
+ * All communications is done using 0MQ and in Parallel.
+   This means the execution is order of magnitudes
+   faster than SSH for a large number of machines.
    - Admittingly, this does not matter if you only
      maintain 12 machines
  * Masterless, means you can configure Development
@@ -399,7 +404,7 @@ clean_up:
  cmd.run:
   - name: rm /tmp/get-pip.py
 
-{% for pkgname in ['django == 1.8.0', 
+{% for pkgname in ['django == 1.8.0',
                    'colorama', 'flask']%}
 install_{{ pkgname }}:
  pip.installed:
@@ -432,7 +437,7 @@ clean_up:
  cmd.run:
   - name: rm /tmp/get-pip.py
 {% endif %}
-{% for pkgname in ['django == 1.8.0', 
+{% for pkgname in ['django == 1.8.0',
                    'colorama', 'flask']%}
 install_{{ pkgname }}:
  pip.installed:
@@ -485,50 +490,46 @@ $ tree /srv/salt/common/
 ```yaml
 $ cat /srv/salt/common/init.sls
 include:
-- common.packages
-- common.py_packages
+ - common.packages
+ - common.py_packages
 ```
 
 ```jinja2
 $ cat common/packages.sls
 common_packages:
-pkg.installed:
-- pkgs:
-- htop
-- strace
-{% if grains['os'] == 'CentOS' %}
-- vim-enhanced
-{% elif grains['os'] == 'Ubuntu' %}
-- vim
-{% endif %}
+ pkg.installed:
+  - pkgs:
+   - htop
+   - strace
+   {% if grains['os'] == 'CentOS' %}
+   - vim-enhanced
+   {% elif grains['os'] == 'Ubuntu' %}
+   - vim
+   {% endif %}
 ```
 ]
-
 ---
 class: term
 # Remote execution briefly
 ## Uses the same targeting system
-
+ * Salt modules
+```shell
+ $ salt 'minion[1-10]' pip.install 'pwman3'
+ $ salt -G 'os:Ubuntu' pkg.install vim
+```
  * Unix commands
 ```shell
- $ salt 'minion1' cmd.run 'uptime'
+ $ salt 'minion[1-10]' cmd.run 'uptime'
 minion1:
 13:31:50 up  3:35,  0 users,  load average: 0.05, 0.03, 0.05
 ```
- * Salt modules
-```shell
- $ salt 'minion1' pip.install 'pwman3'
-```
-
 ---
 class: term
 # Live demo
-
 Get up and running with Vagrant + Salt states:
 ```shell
 $ git clone https://github.com/oz123/salt-vagrant-demo.git
 ```
-
 Running `vagrant up` will create 2 Ubuntu machines and one
 CentOS machine. One Ubuntu machine serves as the salt master.
 
@@ -537,10 +538,9 @@ class: term
 ## Topics not covered due lack of time
 
  * Pillars
- * Returners, beacons Reactors
+ * Returners, beacons & reactors
  * Software repositories for Windows and other OSs.
  * Stand alone with `salt-call`
-
 ---
 class: term
 # Salt's Disatvantages
