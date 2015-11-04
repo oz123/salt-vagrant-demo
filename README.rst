@@ -35,4 +35,4 @@ using Salt.
     sudo salt \* test.ping
 
 
-This was tested on a Gentoo System running with Vagrand 1.7.4, and is expected to work on other system too.
+This was tested on a Gentoo System running with Vagrant 1.7.4, and is expected to work on other system too.
