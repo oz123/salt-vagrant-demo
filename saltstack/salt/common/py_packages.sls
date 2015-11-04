@@ -21,7 +21,7 @@ clean_up:
 
 {% endif %}
 
-{% for pkgname in ['django == 1.8.0', 'colorama', 'flask']%}
+{% for pkgname in ['django == 1.8', 'coloram', 'flask']%}
 install_{{ pkgname }}:
  pip.installed:
   - name: {{ pkgname }}
