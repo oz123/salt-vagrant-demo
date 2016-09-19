@@ -13,7 +13,7 @@ already be installed.
 
 .. code-block:: bash
 
-    git clone https://github.com/UtahDave/salt-vagrant-demo.git
+    git clone https://github.com/oz123/salt-vagrant-demo.git
     cd salt-vagrant-demo
     vagrant up
 
